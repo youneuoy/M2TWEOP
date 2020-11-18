@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\technical">
+      <UniqueIdentifier>{bbd6cf1a-6788-4d1d-a65a-74403a92414d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\technical\imgui">
+      <UniqueIdentifier>{b7a2d4ea-41f9-42a9-9ee4-2f47f9bb24fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\modmanager">
+      <UniqueIdentifier>{ffcef2a5-d1e5-452a-8b1c-10a850d506de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\modmanager">
+      <UniqueIdentifier>{fe3150d6-977c-459d-ba08-db0b21f610fc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="M2TWEOP.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_dx9.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_win32.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Startup.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Params.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="injector.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="music.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="modManager.cpp">
+      <Filter>Исходные файлы\modmanager</Filter>
+    </ClCompile>
+    <ClCompile Include="mod.cpp">
+      <Filter>Исходные файлы\modmanager</Filter>
+    </ClCompile>
+    <ClCompile Include="fsystem.cpp">
+      <Filter>Исходные файлы\modmanager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imfilebrowser.h">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_dx9.h">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_win32.h">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Startup.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Params.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="music.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="modManager.h">
+      <Filter>Файлы заголовков\modmanager</Filter>
+    </ClInclude>
+    <ClInclude Include="fsystem.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="injector.h">
+      <Filter>Файлы заголовков\modmanager</Filter>
+    </ClInclude>
+    <ClInclude Include="mod.h">
+      <Filter>Файлы заголовков\modmanager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="M2TWEOP.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="M2TWEOP.rc">
+      <Filter>Файлы ресурсов</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="manifest.xml">
+      <Filter>Файлы ресурсов</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\functions">
+      <UniqueIdentifier>{5f87f754-d4a0-4ea7-aea8-97a72d6e151f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\functions">
+      <UniqueIdentifier>{42f80e1d-3dc6-43a0-8d96-6da970cda4cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\patches">
+      <UniqueIdentifier>{5174d889-288b-4efd-ba5a-a5e781557239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\patches">
+      <UniqueIdentifier>{7920f137-795b-4c92-a918-1f3baa7b422f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\technical">
+      <UniqueIdentifier>{1686e59f-013c-4172-8280-6757c2938cb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\technical">
+      <UniqueIdentifier>{cd0eb1e8-d0c0-4ad3-bfe4-8303aaa74785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\technical\imgui">
+      <UniqueIdentifier>{39af9d89-0bfe-48e7-8585-c39c83eecddd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\technical\imgui">
+      <UniqueIdentifier>{d04acf3b-0f8c-41ed-b142-83ea23093351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\data">
+      <UniqueIdentifier>{6944405b-2306-4dfc-8ec2-adf4978e9961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\data">
+      <UniqueIdentifier>{4c0b8549-019c-4f06-a123-df1b0889f8fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\plugins">
+      <UniqueIdentifier>{48cf876e-b29f-492b-ba37-12deaeb19478}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\plugins">
+      <UniqueIdentifier>{58cb9ef1-fe99-465a-badb-7eb99b72ae3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="additional">
+      <UniqueIdentifier>{adba3f4b-fb4d-4c0f-ad13-3382f53f84bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Injects.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="configFiles.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="realGameTypes.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="overwritingValues.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="FastFuncts.h">
+      <Filter>Файлы заголовков\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="TechFuncts.h">
+      <Filter>Файлы заголовков\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="labelsChanges.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="battlesResults.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="patchesForGame.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="unitsTypeChange.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="MemWork.h">
+      <Filter>Файлы заголовков\technical</Filter>
+    </ClInclude>
+    <ClInclude Include="TemplateCh.h">
+      <Filter>Файлы заголовков\technical</Filter>
+    </ClInclude>
+    <ClInclude Include="smallPatches.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="diplomacy.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="graphicsD3D.h">
+      <Filter>Файлы заголовков\technical</Filter>
+    </ClInclude>
+    <ClInclude Include="geom.h">
+      <Filter>Файлы заголовков\technical</Filter>
+    </ClInclude>
+    <ClInclude Include="gh_d3d9.h">
+      <Filter>Файлы заголовков\technical</Filter>
+    </ClInclude>
+    <ClInclude Include="mem.h">
+      <Filter>Файлы заголовков\technical</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboardFunctions.h">
+      <Filter>Файлы заголовков\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="eduLimit.h">
+      <Filter>Файлы заголовков\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_win32.h">
+      <Filter>Файлы заголовков\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>Файлы заголовков\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>Файлы заголовков\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_dx9.h">
+      <Filter>Файлы заголовков\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>Файлы заголовков\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>Файлы заголовков\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>Файлы заголовков\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>Файлы заголовков\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="familyEdit.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="BigMenus.h">
+      <Filter>Файлы заголовков\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Keep.h">
+      <Filter>Файлы заголовков\data</Filter>
+    </ClInclude>
+    <ClInclude Include="Localisation.h">
+      <Filter>Файлы заголовков\data</Filter>
+    </ClInclude>
+    <ClInclude Include="TechnicalTreadFuncs.h">
+      <Filter>Файлы заголовков\technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Myeffects.h">
+      <Filter>Файлы заголовков\data</Filter>
+    </ClInclude>
+    <ClInclude Include="colors.h">
+      <Filter>Файлы заголовков\technical</Filter>
+    </ClInclude>
+    <ClInclude Include="tipsEs.h">
+      <Filter>Файлы заголовков\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imfilebrowser.h">
+      <Filter>Файлы заголовков\technical\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="fortsDel.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="bModelChanges.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="stratModelsPatch.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="plugins.h">
+      <Filter>Файлы заголовков\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="eventsCodes.h">
+      <Filter>additional</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Injects.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="configFiles.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="overwritingValues.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="FastFuncts.cpp">
+      <Filter>Исходные файлы\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="TechFuncts.cpp">
+      <Filter>Исходные файлы\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="labelsChanges.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="battlesResults.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="unitsTypeChange.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="patchesForGame.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="MemWork.cpp">
+      <Filter>Исходные файлы\technical</Filter>
+    </ClCompile>
+    <ClCompile Include="TemplateCh.cpp">
+      <Filter>Исходные файлы\technical</Filter>
+    </ClCompile>
+    <ClCompile Include="smallPatches.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="diplomacy.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="graphicsD3D.cpp">
+      <Filter>Исходные файлы\technical</Filter>
+    </ClCompile>
+    <ClCompile Include="geom.cpp">
+      <Filter>Исходные файлы\technical</Filter>
+    </ClCompile>
+    <ClCompile Include="gh_d3d9.cpp">
+      <Filter>Исходные файлы\technical</Filter>
+    </ClCompile>
+    <ClCompile Include="mem.cpp">
+      <Filter>Исходные файлы\technical</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboardFunctions.cpp">
+      <Filter>Исходные файлы\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="eduLimit.cpp">
+      <Filter>Исходные файлы\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_win32.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_dx9.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>Исходные файлы\technical\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="familyEdit.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="BigMenus.cpp">
+      <Filter>Исходные файлы\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Keep.cpp">
+      <Filter>Исходные файлы\data</Filter>
+    </ClCompile>
+    <ClCompile Include="Localisation.cpp">
+      <Filter>Исходные файлы\data</Filter>
+    </ClCompile>
+    <ClCompile Include="TechnicalTreadFuncs.cpp">
+      <Filter>Исходные файлы\technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Myeffects.cpp">
+      <Filter>Исходные файлы\data</Filter>
+    </ClCompile>
+    <ClCompile Include="colors.cpp">
+      <Filter>Исходные файлы\technical</Filter>
+    </ClCompile>
+    <ClCompile Include="tipsEs.cpp">
+      <Filter>Исходные файлы\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="fortsDel.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="bModelChanges.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="stratModelsPatch.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="plugins.cpp">
+      <Filter>Исходные файлы\plugins</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="eventsAll.txt">
+      <Filter>additional</Filter>
+    </Text>
+    <Text Include="eventsDone.txt">
+      <Filter>additional</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

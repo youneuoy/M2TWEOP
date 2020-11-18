@@ -1,0 +1,7 @@
+;DO NOT CHANGE POSITIONS OF THE STRINGS!
+;structure:
+;tooltip string
+;button tooltip
+;mouse at character in family tree:
+tooltip string="RCM to display actions for the character"
+;-)
