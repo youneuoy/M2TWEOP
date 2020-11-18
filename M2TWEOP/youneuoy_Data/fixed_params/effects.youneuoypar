@@ -1,0 +1,29 @@
+; effects of the decidions
+;not change the order of records, change only effects! Any record need at least one effect
+;effect can be nothing
+;effects:
+;money
+;loyality
+;loyality_char
+;authority_leader
+;nothing
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+heir_accepted
+effect
+loyality_char
+5
+effect
+authority_leader
+-1
+effect
+loyality
+-1
+effect
+money
+-1500
+effect
+nothing
+
+;dont delete this string, or you have crash
+;-)

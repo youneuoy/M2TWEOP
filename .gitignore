@@ -338,3 +338,17 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/GPUCache
+/config
+/test2
+/debug1
+/HotSeatToolLib/My Advisor Results - HotSeatToolLib
+/HotSeatToolLib/My Inspector Results - HotSeatToolLib
+/HotSeatToolLib/VTune Profiler Results/HotSeatToolLib
+/M2TWEOP/debug1/M2TWEOP.tlog
+/M2TWEOP/debug1
+/M2TWEOP/My Inspector Results - M2TWEOP
+/M2TWEOP/ntdll.lib
+/M2TWEOP/m2tweop.mp3
+/M2TWEOP/M2TWEOP.exe
+/M2TWEOP/medieval2.exe

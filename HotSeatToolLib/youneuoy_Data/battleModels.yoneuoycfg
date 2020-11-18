@@ -1,0 +1,65 @@
+;comments must be only in the start of the string
+;Entries from the file are checked once per turn, as well as at each battle.
+;Video:https://youtu.be/7jd4P56J2lc
+;You cannot make comments in the middle of a battlemodel record.
+;all done as in the labels file, see the labels.yoneuoycfg for more info
+;before each record you need write:
+;Battle_model_change:
+;this line is id for searching in log file
+;next line is new battle model
+;here is priority of this battle model change
+;The number of conditions that must be true to change the battle model
+;Here start of conditions
+;each condition have number 1 or 0 or 2 - 1 - prerequisite, 0 - optional, 2 - negotiation
+;conditions can be: 
+;trait
+;param-trait name
+;ancillary
+;param-ancillary name
+;name
+;param- name
+;label
+;param-label name
+;4_coords
+;x1
+;y1
+;x2
+;y2
+;passed_Turns
+;passed_Turns>
+;passed_Turns<
+;passed_Turns=
+;number
+;status
+;heir or leader
+;faction
+;faction name
+;example:
+;Battle_model_change:
+;in test file this is first model
+;testmodel
+;0
+;2
+;passed_Turns
+;1
+;1
+;4_coords
+;1
+;73
+;230
+;73
+;230
+;
+;
+
+;Battle_model_change:
+;in test file this is first model
+;sovrano_europeo
+;0
+;2
+;passed_Turns
+;1
+;1
+;faction
+;1
+;england

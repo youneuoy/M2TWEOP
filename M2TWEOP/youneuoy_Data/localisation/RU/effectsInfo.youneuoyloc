@@ -1,0 +1,12 @@
+;DO NOT CHANGE POSITIONS OF THE STRINGS!
+;money effect:
+effect string="золотые монеты"
+;loyality effect:
+effect string="лояльность всех персонажей"
+;loyality of the character effect:
+effect string="лояльность выбранного персонажа"
+;authority of the leader:
+effect string="авторитет правителя"
+
+;dont delete this string, or you have crash
+;-)

@@ -1,0 +1,10 @@
+;this is a list of coordinates of undeleted from stratmap forts
+;comments only before or after record
+;structure of record:
+;fortCoords
+;x
+;y
+;example:
+;fortCoords
+;111
+;22
