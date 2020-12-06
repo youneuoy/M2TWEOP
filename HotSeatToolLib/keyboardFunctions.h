@@ -12,3 +12,8 @@ void changeCameraDistanceMode();
 void changeHighlightUnits();
 
 void highlightUnitsOff();
+
+
+void mmbWork();
+void mmbUnWork();
+void mmbMove();

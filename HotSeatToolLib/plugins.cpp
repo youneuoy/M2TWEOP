@@ -23,17 +23,21 @@ void plugins::init()
 		pluginsCfg.plugins.push_back(pl);
 	}
 }
-
+int ReplaceByte(int index, int value, char replaceByte)
+{
+	return (value & ~(0xFF << (index * 8))) | (replaceByte << (index * 8));
+}
 void __fastcall plugins::onEvent(DWORD** vTab)
 {
 	DWORD adr = (*vTab)[43];
-	char* event;
+	char* event = nullptr;
 	_asm 
 	{
 		mov eax, adr
 		call eax
 		mov event, eax
 	}
+
 
 	for (plugin* pl : pluginsCfg.plugins)
 	{
@@ -106,6 +110,7 @@ void __fastcall plugins::onEvent(DWORD** vTab)
 		else if (compareEvent(event, &pl->onCharacterSelected.stringAdr, pl->onCharacterSelected.strCmp))
 		{
 			generalCharacterictics* prs = reinterpret_cast<generalCharacterictics*>(vTab[1]);
+
 			(*(*pl->onCharacterSelected))(prs);
 		}
 		else if (compareEvent(event, &pl->onGeneralAssaultsGeneral.stringAdr, pl->onGeneralAssaultsGeneral.strCmp))

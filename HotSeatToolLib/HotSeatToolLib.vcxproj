@@ -73,16 +73,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\HotSeatToolLib\imgui;E:\headers\BeaEngine;E:\headers\AsmJit;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\libs;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\HotSeatToolLib\imgui;E:\headers\BeaEngine;E:\headers\AsmJit;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath);$(SolutionDir)\HotSeatToolLib\detours</IncludePath>
+    <LibraryPath>E:\libs;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath);$(SolutionDir)\HotSeatToolLib\detours</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\HotSeatToolLib\imgui;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;E:\headers\BeaEngine;E:\headers\AsmJit;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;E:\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\HotSeatToolLib\imgui;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;E:\headers\BeaEngine;E:\headers\AsmJit;$(IncludePath);$(SolutionDir)\HotSeatToolLib\detours</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;E:\libs;$(LibraryPath);$(SolutionDir)\HotSeatToolLib\detours</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -102,6 +102,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -145,6 +146,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -172,6 +174,8 @@
     <ClInclude Include="bModelChanges.h" />
     <ClInclude Include="colors.h" />
     <ClInclude Include="configFiles.h" />
+    <ClInclude Include="customTiles.h" />
+    <ClInclude Include="detours\detours.h" />
     <ClInclude Include="diplomacy.h" />
     <ClInclude Include="eduLimit.h" />
     <ClInclude Include="eventsCodes.h" />
@@ -181,8 +185,6 @@
     <ClInclude Include="familyEdit.h" />
     <ClInclude Include="FastFuncts.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="geom.h" />
-    <ClInclude Include="gh_d3d9.h" />
     <ClInclude Include="graphicsD3D.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -197,7 +199,6 @@
     <ClInclude Include="keyboardFunctions.h" />
     <ClInclude Include="labelsChanges.h" />
     <ClInclude Include="Localisation.h" />
-    <ClInclude Include="mem.h" />
     <ClInclude Include="MemWork.h" />
     <ClInclude Include="overwritingValues.h" />
     <ClInclude Include="patchesForGame.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="bModelChanges.cpp" />
     <ClCompile Include="colors.cpp" />
     <ClCompile Include="configFiles.cpp" />
+    <ClCompile Include="customTiles.cpp" />
     <ClCompile Include="diplomacy.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="eduLimit.cpp" />
@@ -225,8 +227,6 @@
     <ClCompile Include="Myeffects.cpp" />
     <ClCompile Include="familyEdit.cpp" />
     <ClCompile Include="FastFuncts.cpp" />
-    <ClCompile Include="geom.cpp" />
-    <ClCompile Include="gh_d3d9.cpp" />
     <ClCompile Include="graphicsD3D.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -239,7 +239,6 @@
     <ClCompile Include="keyboardFunctions.cpp" />
     <ClCompile Include="labelsChanges.cpp" />
     <ClCompile Include="Localisation.cpp" />
-    <ClCompile Include="mem.cpp" />
     <ClCompile Include="MemWork.cpp" />
     <ClCompile Include="overwritingValues.cpp" />
     <ClCompile Include="patchesForGame.cpp" />

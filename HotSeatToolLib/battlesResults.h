@@ -15,7 +15,8 @@ using namespace std;
 
 
 
-class bResults {
+class bResults 
+{
 public:
 	static bool isDrawNedeed;
 	static bool isFuckGatesDrawNedeed;

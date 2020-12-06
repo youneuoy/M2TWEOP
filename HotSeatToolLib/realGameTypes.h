@@ -3,6 +3,17 @@
 typedef unsigned char   undefined;
 typedef unsigned int    uint;
 typedef unsigned char    uchar;
+struct custom_tile {
+	char* name;
+	int nameCrypt;
+	int x;
+	int y;
+	char** pathToModel_UNICODE;
+	char* weather;
+	int weatherCrypt;
+	int timeCode;
+};
+
 struct genMod {
 	int type; /* 0-spy, 2 - diplomat, etc */
 	int stratInfo;
@@ -58,12 +69,15 @@ struct stratMod {
 };
 //port building struct(stratmap coords, etc)
 struct portBuildingStruct {
-	undefined field_0x0[12];
+	undefined field_0x0[8];
+	struct general* character; /* charactr on port(enemy or not, army or not) */
 	int x;
 	int y;
 	undefined field_0x14[28];
 	struct settlementStruct* settlement;
-	undefined field_0x34[48];
+	undefined field_0x34[20];
+	struct stackStruct* occupantsArmy; /* if port block by army then it here */
+	undefined field_0x4c[24];
 	struct factionStruct* fac;
 };
 //building draw info(pics, etc)
@@ -146,8 +160,10 @@ struct general { /* character on the stratmap, who has a unit in a stack */
 	undefined field_0x14[108];
 	struct generalCharacterictics* genChar; /* many important info about character */
 	undefined field_0x84[4];
-	struct genMod* genType;//type, model, etc
-	undefined field_0x8c[116];
+	struct genMod* genType;
+	undefined field_0x8c[24];
+	uchar ifMarkedToKill;
+	undefined field_0xa5[91];
 	struct stackStruct* armyLeaded; /* army of the general */
 	undefined field_0x104[4];
 	struct unit* bodyguards; /* unit of general */
@@ -277,11 +293,14 @@ struct stackStruct { /* structure of stack */
 	struct unit** units;
 	undefined field_0x58[4];
 	int numOfUnits;
-	undefined field_0x60[116];
+	undefined field_0x60[80];
+	struct portBuildingStruct* blockedPort; /* if port blocked by this army when it here */
+	undefined field_0xb4[32];
 	struct general* gen;
 	undefined field_0xd8[40];
 	struct settlementStruct* settlement;
-	undefined field_0x104[36];
+	undefined field_0x104[32];
+	int totalStrength;
 	float reform_point_x;
 	float reform_point_y;
 };

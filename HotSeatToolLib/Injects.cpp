@@ -815,7 +815,6 @@ toSpawnArmy::~toSpawnArmy()
 
 void toSpawnArmy::SetOriginaSpawnCode()
 {
-
 	Assembler* a = new Assembler();
 	//mov edx,[esp+30]
 	//mov eax, [esp + 34]
@@ -851,9 +850,6 @@ void toSpawnArmy::SetlSpawnCode()
 
 	a->bind(standardCoords);
 
-	a->mov(edx, dword_ptr(esp, 0x54));
-	a->mov(eax, dword_ptr(esp, 0x58));
-
 	a->jmp(exLab);
 
 	a->bind(overrideCoords);
@@ -877,6 +873,133 @@ void toSpawnArmy::SetlSpawnCode()
 
 	delete a;
 }
+
+toEndOfSpawnArmy::toEndOfSpawnArmy(MemWork* mem, LPVOID adr, int ver)
+	:AATemplate(mem), funcAdress(adr)
+{
+	if (ver == 2)//steam
+		m_adress = 0x00a8d6db;
+
+	else if (ver == 1)//kingdoms
+		m_adress = 0x00a8c67b;
+}
+
+toEndOfSpawnArmy::~toEndOfSpawnArmy()
+{
+}
+
+void toEndOfSpawnArmy::SetOriginalEndSpawnCode()
+{
+	Assembler* a = new Assembler();
+	//mov edx,[esp+30]
+	//mov eax, [esp + 34]
+
+	a->add(eax, 0x1);
+
+	a->ret();
+	m_originalBytes = (unsigned char*)a->make();
+	m_originalSize = m_memory->GetASMSize(m_originalBytes);
+
+	delete a;
+}
+
+void toEndOfSpawnArmy::SetlEndSpawnCode()
+{
+	Assembler* a = new Assembler();
+	a->pushad();
+	a->pushf();
+
+	a->mov(eax, (DWORD)funcAdress);
+	a->call(eax);
+
+	a->popf();
+	a->popad();
+	a->add(eax, 0x1);
+
+
+
+	a->ret();
+	m_cheatBytes = (unsigned char*)a->make();
+
+	delete a;
+}
+
+
+toSpawnCharacter::toSpawnCharacter(MemWork* mem, LPVOID adr, int ver)
+	:AATemplate(mem), funcAdress(adr)
+{
+	if (ver == 2)//steam
+		m_adress = 0x00a8b3a9;
+
+	else if (ver == 1)//kingdoms
+		m_adress = 0x00a8a349;
+}
+
+toSpawnCharacter::~toSpawnCharacter()
+{
+
+}
+
+void toSpawnCharacter::SetOriginaSpawnCode()
+{
+	Assembler* a = new Assembler();
+
+	a->mov(eax, dword_ptr(esp, 0x1c));
+	a->mov(ecx, dword_ptr(esp, 0x20));
+
+	a->ret();
+	m_originalBytes = (unsigned char*)a->make();
+	m_originalSize = m_memory->GetASMSize(m_originalBytes);
+
+	delete a;
+}
+
+void toSpawnCharacter::SetlSpawnCode()
+{
+	Assembler* a = new Assembler();
+	a->pushad();
+	a->pushf();
+	Label overrideCoords = a->newLabel();
+	Label standardCoords = a->newLabel();
+	Label exLab = a->newLabel();
+
+	a->mov(edx, dword_ptr(esp, 0x58));
+	a->mov(esi, dword_ptr(esp, 0x5C));
+	a->mov(eax, (DWORD)funcAdress);
+	a->call(eax);
+
+	a->test(eax, eax);
+
+	//if 0, when standard coords, else not
+	a->jnz(overrideCoords);
+
+	a->bind(standardCoords);
+
+	a->jmp(exLab);
+
+	a->bind(overrideCoords);
+
+	a->mov(edx, dword_ptr(esp, 0x58));
+	a->mov(eax, dword_ptr(esp, 0x5C));
+	a->mov(dword_ptr(esp, 0x40), edx);
+	a->mov(dword_ptr(esp, 0x44), eax);
+
+	a->bind(exLab);
+
+	a->popf();
+	a->popad();
+	a->mov(eax, dword_ptr(esp, 0x1C));
+	a->mov(ecx, dword_ptr(esp, 0x20));
+
+
+
+	a->ret();
+	m_cheatBytes = (unsigned char*)a->make();
+
+	delete a;
+}
+
+
 
 toBattleStratScreen::toBattleStratScreen(MemWork* mem, LPVOID adr, int ver)
 	:AATemplate(mem), funcAdress(adr)
@@ -1231,6 +1354,107 @@ void toEvents::SetlEventsCode()
 	a->push(ebp);
 	a->mov(ebp, esp);
 	a->push(-0x1);
+
+	a->ret();
+	m_cheatBytes = (unsigned char*)a->make();
+
+	delete a;
+}
+
+toCustomTileSelection::toCustomTileSelection(MemWork* mem, LPVOID adr, int ver)
+	:AATemplate(mem), funcAdress(adr)
+{
+	if (ver == 2)//steam
+		m_adress = 0x0049ede4;
+
+	else if (ver == 1)//kingdoms
+		m_adress = 0x0049e974;
+}
+
+toCustomTileSelection::~toCustomTileSelection()
+{
+}
+
+void toCustomTileSelection::SetOriginalTilesCode()
+{
+	Assembler* a = new Assembler();
+
+	a->mov(edi, dword_ptr(ebx));
+	a->add(ecx,0x0001A7C0);
+
+	a->ret();
+	m_originalBytes = (unsigned char*)a->make();
+	m_originalSize = m_memory->GetASMSize(m_originalBytes);
+
+	delete a;
+}
+
+void toCustomTileSelection::SetlTilesCode()
+{
+	Assembler* a = new Assembler();
+
+	a->pushad();
+	a->pushf();
+
+	a->mov(ecx, ebx);
+	a->mov(eax, (DWORD)funcAdress);
+	a->call(eax);
+
+	a->popf();
+	a->popad();
+
+	a->mov(edi, dword_ptr(ebx));
+	a->add(ecx, 0x0001A7C0);
+
+	a->ret();
+	m_cheatBytes = (unsigned char*)a->make();
+
+	delete a;
+}
+
+toCustomTileFileRead::toCustomTileFileRead(MemWork* mem, LPVOID adr, int ver)
+	:AATemplate(mem), funcAdress(adr)
+{
+	if (ver == 2)//steam
+		m_adress = 0x004a1900;
+
+	else if (ver == 1)//kingdoms
+		m_adress = 0x004a1460;
+}
+
+toCustomTileFileRead::~toCustomTileFileRead()
+{
+}
+
+void toCustomTileFileRead::SetOriginalTilesCode()
+{
+	Assembler* a = new Assembler();
+
+	a->mov(eax, dword_ptr(edi,0x10));
+	a->mov(eax, dword_ptr(edi,0x8));
+
+	a->ret();
+	m_originalBytes = (unsigned char*)a->make();
+	m_originalSize = m_memory->GetASMSize(m_originalBytes);
+
+	delete a;
+}
+
+void toCustomTileFileRead::SetlTilesCode()
+{
+	Assembler* a = new Assembler();
+
+	a->pushad();
+	a->pushf();
+
+	a->mov(eax, (DWORD)funcAdress);
+	a->call(eax);
+
+	a->popf();
+	a->popad();
+
+	a->mov(eax, dword_ptr(edi, 0x10));
+	a->cmp(eax, dword_ptr(edi, 0x8));
 
 	a->ret();
 	m_cheatBytes = (unsigned char*)a->make();

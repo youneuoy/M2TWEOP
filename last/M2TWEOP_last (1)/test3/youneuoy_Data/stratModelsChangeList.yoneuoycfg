@@ -1,0 +1,15 @@
+;this is a list of coordinates and models for custom resource tiles
+;comments only before or after record
+;structure of record:
+;ModelChange:
+;x
+;y
+;Model_path
+
+;example:
+
+;ModelChange:
+;75
+;215
+;Model_path="youneuoy_Data/models_strat/northern_european_large_castle.CAS"
+

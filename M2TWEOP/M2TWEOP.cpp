@@ -1,20 +1,24 @@
 ﻿#define _WIN32_WINNT 0x0501
-#include "imgui.h"
-#include "resource1.h"
-#include "imgui_impl_dx9.h"
-#include "imgui_impl_win32.h"
-#define DIRECTINPUT_VERSION 0x0800
-#include <dinput.h>
-#include <tchar.h>
-#include "Drawer.h"
-
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
 #include <windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
 #include <d3dx9tex.h>
-#include "modManager.h"
+#include "imgui/imgui.h"
+#include "resource1.h"
+#include "imgui/imgui_impl_dx9.h"
+#include "imgui/imgui_impl_win32.h"
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
+#include <tchar.h>
+#include "Drawer.h"
+extern "C"
+{
+    __declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+    __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
+
 // Data
 static LPDIRECT3D9              g_pD3D = NULL;
 static LPDIRECT3DDEVICE9        g_pd3dDevice = NULL;
@@ -35,13 +39,10 @@ void loadTexture(string* path, LPDIRECT3DTEXTURE9* image)
         MessageBoxA(NULL, t.c_str(), "Loading texture err!", MB_OK | MB_ICONASTERISK);
     }
 }
+
 // Main code
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
-   /* string md = "E:\\Games\\Steam\\steamapps\\common\\Medieval II Total War\\mods\\@M2TWEOP";
-    SetCurrentDirectory(md.c_str());*/
-    
-
     // Create application window
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, _T("M2TWEOP w"), NULL };
     wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
@@ -83,13 +84,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, IM_COL32(1, 0, 0, 255));
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
 
-
+    LPDIRECT3DTEXTURE9 background;
     CHAR currentPath[MAX_PATH] = { 0 };
-    GetCurrentDirectory(sizeof(currentPath), currentPath);
+    GetModuleFileName(NULL, currentPath, MAX_PATH);
+
+    PathRemoveFileSpec(currentPath);
     string mainTexture = currentPath;
     mainTexture = mainTexture+"\\youneuoy_Data\\M2TWEOP.dds";
-    loadTexture(&mainTexture,&modManager::mods.stdbackground);
-    loadTexture(&mainTexture,&modManager::mods.background);
+    loadTexture(&mainTexture,&background);
+
 
     // Load Fonts
     // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
@@ -108,23 +111,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 
 
     ImVec4 clear_color = ImVec4(1.0f, 1.0f, 1.0f, 1.00f);
+    Startup::startP();
 
-    Startup::setRealDir();
-    modManager::loadLastMod(Startup::gameInfo.realDir);
-    Startup::getGameInfo();
-
-    modManager::run(g_pd3dDevice, Startup::gameInfo.filePatch);
-
-    Startup::reloadMod();
-
+    if (Startup::cfg.justStartMod == true)
+    {
+        if (Startup::runMod() == 0)
+        {
+            MessageBoxA(NULL, "Cannot start mod, try run it again\n Maybe you open more than one instance of the game?", "Attention", NULL);
+        }
+        else
+        {
+            injector::start();
+        }
+        return 0;
+    }
     if (Startup::cfg.startTypeB == 0)
         Drawer::drawMain = false;
     // Main loop
     MSG msg;
     ZeroMemory(&msg, sizeof(msg));
-
-    int curBackground=-1;
-    int bkg = 0;
     while (msg.message != WM_QUIT)
     {
         // Poll and handle messages (inputs, window resize, etc.)
@@ -145,20 +150,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 
         ImGui::SetNextWindowPos(ImVec2(0, 0));
         ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-
-
-        if (curBackground != modManager::mods.selected)
-        {
-            curBackground = modManager::mods.selected;
-
-            bkg= modManager::updateBackgroundTexture(g_pd3dDevice);
-        }
         ImGui::Begin("M2TWEOPimg", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse| ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-        if(bkg)
-            ImGui::Image(modManager::mods.background, ImGui::GetIO().DisplaySize);
-        else
-            ImGui::Image(modManager::mods.stdbackground, ImGui::GetIO().DisplaySize);
+        ImGui::Image(background, ImGui::GetIO().DisplaySize);
         ImGui::End();
 
         Drawer::mainMenu(g_pd3dDevice);

@@ -14,8 +14,6 @@ public:
 
 	void SetOriginalUnitCode();
 	void SetlUnitCode();
-
-
 };
 
 
@@ -217,6 +215,34 @@ private:
 	LPVOID funcAdress;
 };
 
+//spawn_army available coordinates edit
+class toEndOfSpawnArmy
+	:public AATemplate
+{
+public:
+	toEndOfSpawnArmy(MemWork* mem, LPVOID adr, int ver);
+	~toEndOfSpawnArmy();
+
+	void SetOriginalEndSpawnCode();
+	void SetlEndSpawnCode();
+private:
+	LPVOID funcAdress;
+};
+
+//spawn_army available coordinates edit
+class toSpawnCharacter
+	:public AATemplate
+{
+public:
+	toSpawnCharacter(MemWork* mem, LPVOID adr, int ver);
+	~toSpawnCharacter();
+
+	void SetOriginaSpawnCode();
+	void SetlSpawnCode();
+private:
+	LPVOID funcAdress;
+};
+
 //on the battle screen on stratmap
 class toBattleStratScreen
 	:public AATemplate
@@ -318,6 +344,34 @@ public:
 
 	void SetOriginalEventsCode();
 	void SetlEventsCode();
+private:
+	LPVOID funcAdress;
+};
+
+//on custom tile
+class toCustomTileSelection
+	:public AATemplate
+{
+public:
+	toCustomTileSelection(MemWork* mem, LPVOID adr, int ver);
+	~toCustomTileSelection();
+
+	void SetOriginalTilesCode();
+	void SetlTilesCode();
+private:
+	LPVOID funcAdress;
+};
+
+//on custom tiles file read
+class toCustomTileFileRead
+	:public AATemplate
+{
+public:
+	toCustomTileFileRead(MemWork* mem, LPVOID adr, int ver);
+	~toCustomTileFileRead();
+
+	void SetOriginalTilesCode();
+	void SetlTilesCode();
 private:
 	LPVOID funcAdress;
 };

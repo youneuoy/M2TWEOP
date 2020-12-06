@@ -4,6 +4,7 @@
 #include "labelsChanges.h"
 #include "diplomacy.h"
 #include "Myeffects.h"
+#include "customTiles.h"
 #include"fortsDel.h"
 #include "bModelChanges.h"
 #include "stratModelsPatch.h"
@@ -30,5 +31,9 @@ void afterLoadGameData();
 //after comparison in I_CompareCounter command
 void afterI_CompareCounter();
 
+
+//spawn_character coords
+int WINAPI spawnCharacterCoords();
 //spawn_army coords
 int WINAPI spawnArmyCoords();
+void WINAPI spawnEndArmyCoords();

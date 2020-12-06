@@ -1,7 +1,0 @@
-;DO NOT CHANGE POSITIONS OF THE STRINGS!
-;structure:
-;tooltip string
-;button tooltip
-;mouse at character in family tree:
-tooltip string="ПКМ для открытия списка действий с персонажем"
-;-)

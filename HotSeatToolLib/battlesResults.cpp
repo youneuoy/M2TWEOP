@@ -280,7 +280,17 @@ void bResults::CreateBattleFile()
 		} 
 
 		settlementStruct* sett = FastFuncts::checkSett(ar->army->gen->xCoord, ar->army->gen->yCoord,ar->army->faction);
-		if (sett!=nullptr)
+		int condDest = 0;
+		for (alliance* a : alliances)
+		{
+			if (a->armies[0]->condSetl == 1)
+			{
+				condDest = 1;
+			}
+		}
+		if (sett!=nullptr&&
+			condDest==1
+			)
 		{
 			f1 << "settlement";
 			if (sett->isCastle == 1)

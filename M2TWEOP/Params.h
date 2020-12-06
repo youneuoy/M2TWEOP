@@ -20,7 +20,5 @@ public:
 	static void findAnyParam(bool* arg, string s, string param);
 private:
 	static void replaceAll(string& s, const string& search, const string& replace);
-
-
 };
 

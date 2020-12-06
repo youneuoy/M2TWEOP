@@ -105,15 +105,6 @@
     <ClInclude Include="graphicsD3D.h">
       <Filter>Файлы заголовков\technical</Filter>
     </ClInclude>
-    <ClInclude Include="geom.h">
-      <Filter>Файлы заголовков\technical</Filter>
-    </ClInclude>
-    <ClInclude Include="gh_d3d9.h">
-      <Filter>Файлы заголовков\technical</Filter>
-    </ClInclude>
-    <ClInclude Include="mem.h">
-      <Filter>Файлы заголовков\technical</Filter>
-    </ClInclude>
     <ClInclude Include="keyboardFunctions.h">
       <Filter>Файлы заголовков\functions</Filter>
     </ClInclude>
@@ -186,6 +177,12 @@
     <ClInclude Include="eventsCodes.h">
       <Filter>additional</Filter>
     </ClInclude>
+    <ClInclude Include="detours\detours.h">
+      <Filter>Исходные файлы\technical</Filter>
+    </ClInclude>
+    <ClInclude Include="customTiles.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -234,15 +231,6 @@
       <Filter>Исходные файлы\patches</Filter>
     </ClCompile>
     <ClCompile Include="graphicsD3D.cpp">
-      <Filter>Исходные файлы\technical</Filter>
-    </ClCompile>
-    <ClCompile Include="geom.cpp">
-      <Filter>Исходные файлы\technical</Filter>
-    </ClCompile>
-    <ClCompile Include="gh_d3d9.cpp">
-      <Filter>Исходные файлы\technical</Filter>
-    </ClCompile>
-    <ClCompile Include="mem.cpp">
       <Filter>Исходные файлы\technical</Filter>
     </ClCompile>
     <ClCompile Include="keyboardFunctions.cpp">
@@ -304,6 +292,9 @@
     </ClCompile>
     <ClCompile Include="plugins.cpp">
       <Filter>Исходные файлы\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="customTiles.cpp">
+      <Filter>Исходные файлы\patches</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

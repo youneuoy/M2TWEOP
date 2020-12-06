@@ -1,20 +1,29 @@
 #include "graphicsD3D.h"
 #include "BigMenus.h"
+#include "detours.h"
+#include "keyboardFunctions.h"
+
+
 bool Open = false;
 
 static bool ImInitialized = false;
+static int initCount = 0;
 void* d3d9Device[119];
 WNDPROC oWndProc = nullptr;
-HRESULT(APIENTRY* oEndScene)(LPDIRECT3DDEVICE9);
 HWND Window = nullptr;
 LPDIRECT3DDEVICE9 pD3DDevice = nullptr;
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-HRESULT APIENTRY EndScene(LPDIRECT3DDEVICE9 pDevice);
 LRESULT CALLBACK hkWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 D3DCOLOR fontColor = 0;
 ID3DXFont* m_font = 0;
 RECT fontRect = { 20, 20, 555, 555 };
+
+
+typedef HRESULT(__stdcall* f_EndScene)(IDirect3DDevice9* pDevice); // Our function prototype 
+typedef HRESULT(__stdcall* f_Reset)(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters); // Our function prototype 
+f_EndScene oEndScene; // Original Endscene
+f_Reset oReset; // Original Endscene
 
 
 LPDIRECT3DDEVICE9 actualDevice= nullptr;
@@ -82,7 +91,21 @@ void Draw(LPDIRECT3DDEVICE9 pDevice)
 }
 
 
-HRESULT APIENTRY EndScene(LPDIRECT3DDEVICE9 pDevice)
+HRESULT __stdcall hkReset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters)
+{
+    if (initCount > 0)
+    {
+        D3DDEVICE_CREATION_PARAMETERS d3dcp{ 0 };
+
+        ImGui_ImplDX9_Shutdown();
+        ImGui_ImplWin32_Shutdown();
+        ImInitialized = false;
+    }
+    return oReset(pDevice, pPresentationParameters);
+
+}
+
+HRESULT APIENTRY hkEndScene(IDirect3DDevice9* pDevice)
 {
     
 
@@ -106,6 +129,7 @@ HRESULT APIENTRY EndScene(LPDIRECT3DDEVICE9 pDevice)
 
     if (!ImInitialized)
     {
+        initCount++;
         actualDevice = pDevice;
 
         pDevice->GetCreationParameters(&BigMenus::screenParams.cparams);
@@ -148,6 +172,7 @@ HRESULT APIENTRY EndScene(LPDIRECT3DDEVICE9 pDevice)
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
+        mmbMove();
         Draw(pDevice);
 
         ImGui::EndFrame();
@@ -199,12 +224,75 @@ LRESULT CALLBACK hkWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                  familyEdit::checkDrawCond();
                  break;
              }
+             break;
+         }
+         case WM_MBUTTONDOWN:
+         {
+             mmbWork();
+
+             break;
+         }
+         case WM_MBUTTONUP:
+         {
+             mmbUnWork();
+
+             break;
+         }
+         case WM_MOUSEMOVE:
+         {
+            // mmbMove();
+
+             break;
          }
     }
 
     if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam)) return 1;
     return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
+
+
+
+bool GetD3D9Device(void** pTable, size_t Size)
+{
+    if (!pTable)
+        return false;
+
+    IDirect3D9* pD3D = Direct3DCreate9(D3D_SDK_VERSION);
+
+    if (!pD3D)
+        return false;
+
+    IDirect3DDevice9* pDummyDevice = NULL;
+
+
+    D3DPRESENT_PARAMETERS d3dpp = {};
+    d3dpp.Windowed = false;
+    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+    d3dpp.hDeviceWindow = Window;
+
+    HRESULT dummyDeviceCreated = pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
+
+    if (dummyDeviceCreated != S_OK)
+    {
+
+        d3dpp.Windowed = !d3dpp.Windowed;
+
+        dummyDeviceCreated = pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
+
+        if (dummyDeviceCreated != S_OK)
+        {
+            pD3D->Release();
+            return false;
+        }
+    }
+
+    memcpy(pTable, *reinterpret_cast<void***>(pDummyDevice), Size);
+
+    pDummyDevice->Release();
+    pD3D->Release();
+    return true;
+}
+
 
 
 DWORD WINAPI InitS()
@@ -217,12 +305,12 @@ DWORD WINAPI InitS()
 
 	AddFontResourceEx(sw, FR_PRIVATE, NULL);
 
-	if (GetD3D9Device(d3d9Device, sizeof(d3d9Device)))
-	{
-		oEndScene = (tEndScene)TrampHook((char*)d3d9Device[42], (char*)EndScene, 7);
-
-	}
-	return 0;
+    if (GetD3D9Device(d3d9Device, sizeof(d3d9Device)))
+    {
+        oEndScene = (f_EndScene)DetourFunction((PBYTE)d3d9Device[42], (PBYTE)hkEndScene);
+        oReset = (f_Reset)DetourFunction((PBYTE)d3d9Device[16], (PBYTE)hkReset);
+    }
+    return true;
 }
 
 void getCPos(POINT* p)

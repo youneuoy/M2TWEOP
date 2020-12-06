@@ -1,0 +1,38 @@
+;comments must be only in the start of the string
+;You cannot make comments in the middle of a label record.
+;instruction for this feathure by Jadli:
+;https://www.twcenter.net/forums/showthread.php?804713-Characters-Labels-Overhaul-(scripting-capabilities-improvement)
+;russian translation of instruction(русский перевод инструкции):
+;http://imtw.ru/topic/60652-peresmotr-metok-personazhei-uluchshenie-skripto/page__pid__2397390#entry2397390
+;before each record you need write:
+;label:
+;this line is id for searching in log file
+;next line is new label
+;here is priority of this label change
+;The number of conditions that must be true to change the label
+;Here start of conditions
+;each condition have number 1 or 0 or 2 - 1 - prerequisite, 0 - optional, 2 - negotiation
+;conditions can be: 
+;trait
+;ancillary
+;name
+;label
+;4_coords
+;passed_Turns
+;example:
+;label:
+;in test file this is first label
+;testlabel
+;0
+;2
+;passed_Turns
+;1
+;1
+;4_coords
+;1
+;73
+;230
+;73
+;230
+;
+;

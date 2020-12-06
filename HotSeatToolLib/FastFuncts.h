@@ -46,6 +46,7 @@ namespace FastFuncts
 
 	//check diplomatic status
 	EOP_EXPORT UINT32 checkFacsDipStance(factionStruct* first, string* next, string* state);
+	EOP_EXPORT UINT32 checkFacsDipStanceFast(factionStruct* first, factionStruct* next,int state);
 
 	//find faction by dipnum
 	string findFacByModNum(int modnum);
@@ -64,9 +65,21 @@ namespace FastFuncts
 
 	//array of pointers to stacks in battle
 	vector<structs::arm*> getBattleStacksList();
+	EOP_EXPORT vector<structs::arm*>* getBattleStacksListP();
+
+
+
+	EOP_EXPORT void killUnit(unit* un);
 
 	//kill unit
 	EOP_EXPORT void killUnit(unit* un);
+
+	//add anchillary to character
+	EOP_EXPORT int addAnchillary(generalCharacterictics* character,anchillary* anch);
+	//remove anchillary from character
+	EOP_EXPORT void removeAnchillary(generalCharacterictics* character,anchillary* anch);
+
+	EOP_EXPORT anchillary* findAnchillary(char* anchName);
 
 	//set unit soldiersNum and EXP
 	EOP_EXPORT int setUnitSoldiers(unit* un,UINT32 num, UINT32 exp, string type);
@@ -83,6 +96,7 @@ namespace FastFuncts
 	//enable vassal
 	void enableVassal(factionDiplomacy* first, factionDiplomacy* next);
 
+	int getNewAge(int ageChar, int newAge);
 
 	//make heir
 	EOP_EXPORT void setHeir(generalCharacterictics* gen);

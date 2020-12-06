@@ -1,6 +1,0 @@
-;text colors(RGBA):
-;default is white
-Text_red=255
-Text_green=0
-Text_blue=0
-Text_alpha=255

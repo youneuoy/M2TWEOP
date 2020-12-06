@@ -1,7 +1,10 @@
 #pragma once
 #include <windows.h>
-#include "mem.h"
-#include "gh_d3d9.h"
+#include <d3d9.h>
+#include <d3dx9.h>
+#pragma comment(lib, "d3d9.lib")
+#pragma comment(lib, "d3dx9.lib")
+
 #include <string>
 #include "configFiles.h"
 #include <fstream>

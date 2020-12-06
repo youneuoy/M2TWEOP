@@ -118,6 +118,7 @@ EOP_EXPORT int FastFuncts::addUnitToArmy(unit* un, stackStruct* army)
 		push 0
 		push un
 		mov ecx, army
+		mov eax, adr
 		call eax
 	}
 	return 1;
@@ -185,6 +186,26 @@ UINT32 FastFuncts::checkFacsDipStance(factionStruct* first, string* next, string
 			)
 			return 1;
 	}
+
+	return 0;
+}
+
+EOP_EXPORT UINT32 FastFuncts::checkFacsDipStanceFast(factionStruct* first, factionStruct* next, int state)
+{
+	UINT32 diparray;
+	Read(structs::gameDataOffsets.bDataOffset, &diparray);
+	diparray = diparray + 0x1750;
+	factionDiplomacy* fd = reinterpret_cast<factionDiplomacy*>(diparray);
+
+	UINT32 f = first->dipNum;
+	UINT32 t = next->dipNum;
+
+	if (fd[t + 31 * f].state == state)
+	{
+		return 1;
+	}
+
+
 
 	return 0;
 }
@@ -587,7 +608,15 @@ vector<structs::arm*> FastFuncts::getBattleStacksList()
 
 	}
 	f1.close();
+
 	return battleArmies;
+}
+
+vector<structs::arm*>* FastFuncts::getBattleStacksListP()
+{
+	vector<structs::arm*>* ret=new vector<structs::arm*>();
+	*ret= getBattleStacksList();
+	return ret;
 }
 
 void FastFuncts::killUnit(unit* un)
@@ -611,6 +640,88 @@ void FastFuncts::killUnit(unit* un)
 		call eax
 	}
 
+}
+
+EOP_EXPORT int FastFuncts::addAnchillary(generalCharacterictics* character, anchillary* anch)
+{
+
+	if (character == nullptr || anch == nullptr)return 0;
+
+	DWORD adr = 0;
+	int ret = 0;
+	if (structs::cfg.gamever == 2)//steam
+	{
+		adr = 0x005a5d50;
+	}
+	else
+	{
+		adr = 0x005a5870;
+	}
+	_asm
+	{
+		mov ecx, character
+		push anch
+		mov eax, adr
+		call eax
+		mov ret,eax
+	}
+
+
+	return ret;
+}
+
+EOP_EXPORT void FastFuncts::removeAnchillary(generalCharacterictics* character, anchillary* anch)
+{
+	if (character == nullptr || anch == nullptr)return;
+
+	DWORD adr = 0;
+	int ret = 0;
+	if (structs::cfg.gamever == 2)//steam
+	{
+		adr = 0x005a5e70;
+	}
+	else
+	{
+		adr = 0x005a5990;
+	}
+	_asm
+	{
+		mov ecx, character
+		push anch
+		mov eax, adr
+		call eax
+		mov ret, eax
+	}
+
+	return;
+}
+
+EOP_EXPORT anchillary* FastFuncts::findAnchillary(char* anchName)
+{
+	if (anchName == nullptr)return 0;
+
+	DWORD adr = 0;
+	anchillary* ret = nullptr;
+	if (structs::cfg.gamever == 2)//steam
+	{
+		adr = 0x008b1d30;
+	}
+	else
+	{
+		adr = 0x008b1340;
+	}
+
+	_asm
+	{
+		push anchName
+		mov eax, adr
+		call eax
+		add esp, 4
+		mov ret, eax
+	}
+
+
+	return ret;
 }
 
 int FastFuncts::setUnitSoldiers(unit* un, UINT32 num, UINT32 exp, string type)
@@ -792,6 +903,14 @@ void FastFuncts::enableVassal(factionDiplomacy* first, factionDiplomacy* next)
 	next->trade = 1;
 }
 
+int FastFuncts::getNewAge(int ageChar, int newAge)
+{
+	int ret = 0;
+	ret = ageChar ^ (newAge * 8 ^ ageChar) & 0x3f8;
+
+	return ret;
+}
+
 void FastFuncts::setHeir(generalCharacterictics* gen)
 {
 	/*factionStruct* fac = gen->faction;
@@ -967,14 +1086,15 @@ general* FastFuncts::findCharacter(int x, int y)
 	UINT32 numFac = FastFuncts::getFactionsCount();
 	factionStruct** listFac = FastFuncts::getFactionsList();
 
-	UINT32 changed = 0;
 	for (UINT32 i = 0; i < numFac; i++)
 	{
 		for (int j = 0; j < listFac[i]->numOfCharacters; j++)
 		{
-			if (listFac[i]->characters[j]->xCoord == x
+			if (listFac[i]->characters[j]->ifMarkedToKill==0
 				&&
-				listFac[i]->characters[j]->yCoord == y
+				listFac[i]->characters[j]->xCoord == x
+				&&
+				listFac[i]->characters[j]->yCoord == y			
 				)
 			{
 				return listFac[i]->characters[j];

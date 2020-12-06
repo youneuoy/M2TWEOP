@@ -13,7 +13,6 @@
 #pragma comment(lib, "Psapi.lib")
 #include "Params.h"
 #include "music.h"
-#include "modManager.h"
 using namespace std;
 class Startup
 {
@@ -30,6 +29,9 @@ public:
 		string startTypeTip = ";show config windows-1, show only start buttons - 0";
 
 		bool closeAfterStart=true;
+
+		bool justStartMod = false;
+		string justStartModTip = ";dont show menu, just start mod";
 	}cfg;
 	
 
@@ -122,7 +124,6 @@ public:
 		char* currentMod;
 		string currentModTip="Patch of the mod";
 
-		char* realDir;
 		int v;
 	}gameInfo;
 
@@ -140,11 +141,6 @@ public:
 
 		bool applyGameConfig=true;
 		string applyGameConfigTip = "It is highly recommended to leave activated";
-
-
-		//dont apply patches
-		bool justRun = false;
-		string justRunTip = "select if you dont want apply patches";
 	}gameConfig;
 
 	static void loadParams();
@@ -165,11 +161,7 @@ public:
 
 	static void writeGameCfg(int ifmod);
 
-	static void writeAllConfigs();
 	
-	static void setRealDir();
-
-	static void reloadMod();
 private:
 	static string findMTW(string s,int* ver);
 

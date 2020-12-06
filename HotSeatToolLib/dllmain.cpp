@@ -63,10 +63,13 @@ int ageCheckTrait(structs::ageStep* arg, DWORD pers)
 		f1 << "character trait:  " << tttR <<",  level:"<< lvlTtr << endl;
 		if (arg->param==tttR&& lvlTtr>0)
 		{
-			DWORD y = 0xc8;
-			Write(&y, pers + 0x26c, 1);
+			generalCharacterictics* gen = (generalCharacterictics*)pers;
 
-
+			int age = gen->age;
+			if (age & 1)
+			{
+				gen->age = FastFuncts::getNewAge(age, 25);
+			}
 			f1 << "Finded, age reset. End" << endl;
 			f1.close();
 			return 1;
@@ -98,10 +101,13 @@ int ageCheckAncillary(structs::ageStep* arg, DWORD pers)
 		f1 << "character ancillary:  " << anchNaz << endl;
 		if (arg->param == anchNaz)
 		{
-			DWORD y = 0xc8;
-			Write(&y, pers + 0x26c, 1);
+			generalCharacterictics* gen = (generalCharacterictics*)pers;
 
-
+			int age = gen->age;
+			if (age & 1)
+			{
+				gen->age = FastFuncts::getNewAge(age, 25);
+			}
 			f1 << "Finded, age reset. End" << endl;
 			f1.close();
 			return 1;
@@ -128,10 +134,13 @@ int ageCheckName(structs::ageStep* arg, DWORD pers)
 
 	if (arg->param == persName)
 	{
-		DWORD y = 0xc8;
-		Write(&y, pers + 0x26c,1);
+		generalCharacterictics* gen =(generalCharacterictics*) pers;
 
-
+		int age = gen->age;
+		if (age & 1)
+		{
+			gen->age = FastFuncts::getNewAge(age, 25);
+		}
 		f1 << "Finded, age reset. End" << endl;
 		f1.close();
 		return 1;
@@ -233,7 +242,7 @@ void setAgeVisual(DWORD pers, string s, int standart=0)
 			}
 			float persBirthYear = 0;
 			Read(pers + 0x204, &persBirthYear);
-			age += year - persBirthYear;
+			age +=(int) year - (int)persBirthYear;
 			f1 << "new visual age:  " << s << endl;
 
 
@@ -482,6 +491,21 @@ void doPachs()
 	f1 << "Done" << endl;
 
 
+	f1 << "Start applying spawn_army coords patch end" << endl;
+	toEndOfSpawnArmy* endSpwnArm = new toEndOfSpawnArmy(mem, (LPVOID)spawnEndArmyCoords, structs::cfg.gamever);
+	endSpwnArm->SetlEndSpawnCode();
+	endSpwnArm->Enable();
+
+	f1 << "Done" << endl;
+
+	f1 << "Start applying spawn_character coords patch" << endl;
+	toSpawnCharacter* spwnChar = new toSpawnCharacter(mem, (LPVOID)spawnCharacterCoords, structs::cfg.gamever);
+	spwnChar->SetlSpawnCode();
+	spwnChar->Enable();
+
+	f1 << "Done" << endl;
+
+
 	f1 << "Start applying battle_start patch" << endl;
 	toBattleStratScreen* bstart = new toBattleStratScreen(mem, (LPVOID)bModelChanges::checkAndChangeModels, structs::cfg.gamever);
 	bstart->SetlBSCode();
@@ -529,6 +553,20 @@ void doPachs()
 
 	f1 << "Done" << endl;
 
+	f1 << "Start applying custom_tiles patch" << endl;
+	toCustomTileSelection* ctiles = new toCustomTileSelection(mem, (LPVOID)customTiles::onTileCheck, structs::cfg.gamever);
+	ctiles->SetlTilesCode();
+	ctiles->Enable();
+
+	f1 << "Done" << endl;
+
+	f1 << "Start applying custom_tiles file patch" << endl;
+	toCustomTileFileRead* ctilesF = new toCustomTileFileRead(mem, (LPVOID)customTiles::readTilesFile, structs::cfg.gamever);
+	ctilesF->SetlTilesCode();
+	ctilesF->Enable();
+
+	f1 << "Done" << endl;
+
 	thread thrSMod(limitsFile,mem);
 
 	thrSMod.detach();
@@ -556,7 +594,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		doPachs();
 		readFiles();
 		CloseHandle(CreateThread(0, 0, (LPTHREAD_START_ROUTINE)KeyboardHook, 0, 0, 0));
-		CloseHandle(CreateThread(0, 0, (LPTHREAD_START_ROUTINE)InitS, NULL, 0, 0));
+		CloseHandle(CreateThread(0, 0, (LPTHREAD_START_ROUTINE)InitS, 0, 0, 0));
 		plugins::init();
 	}
 	case DLL_THREAD_ATTACH:

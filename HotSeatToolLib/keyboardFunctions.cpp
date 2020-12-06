@@ -1,4 +1,7 @@
 #include"keyboardFunctions.h"
+#include "imgui/imgui.h"
+#include "FastFuncts.h"
+
 int battleFarCamera = 0;
 
 bool highlightOn = false;
@@ -87,4 +90,125 @@ void highlightUnitsOff()
 {
     Write(&highLightOff, structs::gameCodeOffsets.highlightCodeOffset + 0x1, 1);
     highlightOn = false;
+}
+
+
+
+struct coordsMMB
+{
+    int x=-1;
+    int y =-1;
+};
+coordsMMB MMBold;
+coordsMMB MMBnew;
+
+
+coordsMMB MMBstart;
+
+bool ismWork = false;
+void mmbWork()
+{
+  /*  ismWork = true;
+
+    //center coords
+    DWORD adrCoord = 0x0196a004;
+    Read(adrCoord, &adrCoord);
+
+    DWORD adrX = adrCoord + 0x11bc;
+    DWORD adrY = adrCoord + 0x11c0;
+
+
+
+    Read(adrX, &MMBstart.x);
+    Read(adrY, &MMBstart.y);
+
+
+
+    //mouse coourds
+    adrX = 0x2C3DA48;
+    adrY = 0x2C3DA48 + 0x4;
+
+    Read(adrX, &MMBold.x);
+    Read(adrX, &MMBnew.x);
+    Read(adrY, &MMBold.y);
+    Read(adrY, &MMBnew.y);*/
+}
+
+void mmbUnWork()
+{
+   /* ismWork = false;*/
+}
+
+
+int num = 0;
+void mmbMove()
+{
+   /* ImGui::Begin("coordinates");
+
+    ImGui::Text("Start = %d, %d", MMBstart.x, MMBstart.y);
+    ImGui::Text("New = %d, %d", MMBnew.x, MMBnew.y);
+    ImGui::Text("Old = %d, %d", MMBold.x, MMBold.y);
+    ImGui::End();*/
+
+  /*  num++;
+    if (num % 2 == 0)return;
+    if (ismWork == false)return;
+    //center coords
+    //mouse coourds
+    DWORD adrX = 0x2C3DA48;
+    DWORD adrY = 0x2C3DA48 + 0x4;
+
+    Read(adrX, &MMBnew.x);
+    Read(adrY, &MMBnew.y);
+
+    if (MMBold.x == MMBnew.x
+        && MMBold.y == MMBnew.y
+        )
+    {
+        return;
+    }
+        
+
+
+    int dX= MMBnew.x - MMBold.x;
+
+    int dY= MMBnew.y - MMBold.y;
+    if (dX > 1)dX = 1;
+    if (dX < -1)dX = -1;
+    if (dY > 1)dY = 1;
+    if (dY < -1)dY = -1;
+
+    MMBnew.x= MMBstart.x+ dX;
+    MMBnew.y= MMBstart.y+ dY;
+
+
+
+    DWORD adr = 0x0098e030;
+
+
+    _asm
+    {
+        push MMBnew.y
+        push MMBnew.x
+        mov eax, [adr]
+        call eax
+        add esp, 8
+    }
+
+    Read(adrX, &MMBold.x);
+    Read(adrX, &MMBnew.x);
+    Read(adrY, &MMBold.y);
+    Read(adrY, &MMBnew.y);
+
+
+    DWORD adrCoord = 0x0196a004;
+    Read(adrCoord, &adrCoord);
+
+    adrX = adrCoord + 0x11bc;
+    adrY = adrCoord + 0x11c0;
+
+
+
+    Read(adrX, &MMBstart.x);
+    Read(adrY, &MMBstart.y);*/
 }

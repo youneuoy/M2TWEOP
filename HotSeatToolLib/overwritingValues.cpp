@@ -181,8 +181,6 @@ void limitsFile(MemWork* mem)
 	f1.close();
 
 
-
-
 	sizeOfBattleField* sizeField = new sizeOfBattleField(mem, structs::cfg.gamever, owW::cfg.battlefieldMapSizeX, owW::cfg.battlefieldMapSizeY);
 
 	sizeField->SetlSizeCode();
@@ -196,8 +194,6 @@ void limitsFile(MemWork* mem)
 	{
 		doSteam();
 	}
-
-
 
 	vector<DWORD> adresses;
 

@@ -19,3 +19,5 @@ public:
 private:
 	static void threadF();
 };
+
+int test();
