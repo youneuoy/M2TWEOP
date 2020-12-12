@@ -1,4 +1,5 @@
 ﻿#define _WIN32_WINNT 0x0501
+
 #include <windows.h>
 
 #include "pch.h"
@@ -35,8 +36,6 @@ using namespace AsmJit;
 //disasm
 #pragma comment(lib,"BeaEngine_s.lib")
 #include "plugins.h"
-
-
 //Do not do as here
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 int ageCheckTrait(structs::ageStep* arg, DWORD pers)

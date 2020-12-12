@@ -183,6 +183,12 @@
     <ClInclude Include="customTiles.h">
       <Filter>Файлы заголовков\patches</Filter>
     </ClInclude>
+    <ClInclude Include="adminHSUnitsEdit.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
+    <ClInclude Include="startFortsModelsPatch.h">
+      <Filter>Файлы заголовков\patches</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -296,6 +302,12 @@
     <ClCompile Include="customTiles.cpp">
       <Filter>Исходные файлы\patches</Filter>
     </ClCompile>
+    <ClCompile Include="adminHSUnitsEdit.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
+    <ClCompile Include="startFortsModelsPatch.cpp">
+      <Filter>Исходные файлы\patches</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="eventsAll.txt">
@@ -304,5 +316,8 @@
     <Text Include="eventsDone.txt">
       <Filter>additional</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

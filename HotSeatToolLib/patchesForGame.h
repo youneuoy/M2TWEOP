@@ -8,6 +8,7 @@
 #include"fortsDel.h"
 #include "bModelChanges.h"
 #include "stratModelsPatch.h"
+#include "startFortsModelsPatch.h"
 
 #include "plugins.h"
 //Functions from this file are executed at certain events in the game.

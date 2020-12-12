@@ -10,6 +10,8 @@
 #include <thread>
 #include "overwritingValues.h"
 #include "keyboardFunctions.h"
+
+#include "startFortsModelsPatch.h"
 using namespace std;
 class stratModelsPatch
 {

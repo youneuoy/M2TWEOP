@@ -17,6 +17,7 @@
 #include <system_error>
 #include "colors.h"
 #include "battlesResults.h"
+#include "adminHSUnitsEdit.h"
 using namespace std;
 
 

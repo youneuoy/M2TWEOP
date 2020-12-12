@@ -1,5 +1,6 @@
 #include "stratModelsPatch.h"
 
+
 stratModelsPatch::stratModCfg stratModelsPatch::stModCfg;
 bool stratModelsPatch::modelsReaded=false;
 
@@ -107,10 +108,12 @@ void WINAPI stratModelsPatch::disableChecker()
 	modelsReaded = false;
 	stratModelsPatch::stModCfg.checkNeed = false;
 	//customModelsStrat::changeLoadCode();
+	startFortsModelsPatch::disableChecker();
 }
 
 void __stdcall stratModelsPatch::enableChecker()
 {
+	startFortsModelsPatch::enableChecker();
 	//customModelsStrat::copyListToGame();
 	stratModelsPatch::stModCfg.checkNeed = true;
 }
@@ -177,6 +180,8 @@ void stratModelsPatch::modelsChangeThread(DWORD sleepTime)
 			}
 		}*/
 		//!
+		//! 
+		 startFortsModelsPatch::checkAndChangeModels();
 		for (UINT32 i = 0; i < numFac; i++)
 		{
 			UINT32 numOfSettl = listFac[i]->settlementsNum;
@@ -279,6 +284,8 @@ void stratModelsPatch::readCfgFile()
 void __stdcall stratModelsPatch::unicalStratModsRead()
 {
 	if (modelsReaded == true) return;
+
+	startFortsModelsPatch::readCasModels();
 	structs::modelsStrat.clear();
 	stratModelsPatch::changedModels.clear();
 	modelsReaded = true;

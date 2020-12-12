@@ -47,6 +47,8 @@ void afterEDUread()
 	bModelChanges::readModelsFile();
 
 	stratModelsPatch::runStratModelsChangeThread();
+
+	startFortsModelsPatch::readModelsFile();
 }
 
 void afterLoadGameData()
@@ -104,7 +106,8 @@ int __stdcall spawnArmyCoords()
 {
 	UINT32 x = 0;
 	UINT32 y = 0;
-	_asm {
+	_asm 
+	{
 		mov x, edx
 		mov y, esi
 	}

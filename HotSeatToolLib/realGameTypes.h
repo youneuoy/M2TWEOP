@@ -29,6 +29,17 @@ struct genMod {
 	struct genBattleMod* battleMod;
 	undefined field_0x34[4];
 };
+
+//fort model struct on stratmap
+struct stratFortMod {
+	struct model_Rigid* centerModel;
+	struct model_Rigid* wallsModel;
+	char* centerModelPath;
+	int centerModelPathCrypt;
+	char* wallsModelPath;
+	int wallsModelPathCrypt;
+};
+
 //resource model struct on stratmap
 struct stratResMod {
 	struct model_Rigid* model;
@@ -596,7 +607,9 @@ struct fortStruct {
 	UINT32 yCoord;
 	undefined field_0x14[48];
 	struct stackStruct* army;
-	undefined field_0x48[160];
+	undefined field_0x48[152];
+	struct stratFortMod* stratModel;
+	undefined field_0xe4[4];
 	struct factionStruct* faction;
 	undefined field_0xec[12];
 	char* fortType;

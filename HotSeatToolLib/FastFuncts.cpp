@@ -59,6 +59,20 @@ factionStruct* FastFuncts::findFac(string* name)
 	return listFac[0];
 }
 
+int FastFuncts::getFactionIndexByDipNum(int dipNum)
+{
+	UINT32 numFac = FastFuncts::getFactionsCount();
+	factionStruct** listFac = FastFuncts::getFactionsList();
+	for (UINT32 i = 0; i < numFac; i++)
+	{
+		if (listFac[i]->dipNum == dipNum)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 EOP_EXPORT int FastFuncts::getEDUIndex(const char* type)
 {
 	eduEntryes* EDB=reinterpret_cast<eduEntryes*>(structs::gameDataOffsets.unitTypesStart-4);
@@ -74,15 +88,15 @@ EOP_EXPORT int FastFuncts::getEDUIndex(const char* type)
 	return -1;
 }
 
-EOP_EXPORT unit* FastFuncts::createUnitN(const char* type, int exp, int arm, int weap)
+EOP_EXPORT unit* FastFuncts::createUnitN(const char* type, int facNum, int exp, int arm, int weap)
 {
 	int unitIndex = getEDUIndex(type);
 
 
-	return createUnitIdx(unitIndex, exp, arm, weap);
+	return createUnitIdx(unitIndex, facNum, exp, arm, weap);
 }
 
-EOP_EXPORT unit* FastFuncts::createUnitIdx(int index, int exp, int arm, int weap)
+EOP_EXPORT unit* FastFuncts::createUnitIdx(int index, int facNum, int exp, int arm, int weap)
 {
 	if (index == -1)return nullptr;
 
@@ -97,7 +111,7 @@ EOP_EXPORT unit* FastFuncts::createUnitIdx(int index, int exp, int arm, int weap
 		push arm
 		push -1
 		push exp
-		push 0
+		push facNum
 		push index
 		push 0
 
@@ -773,6 +787,23 @@ int FastFuncts::setUnitSoldiers(unit* un, UINT32 num, UINT32 exp, string type)
 	return 1;
 }
 
+EOP_EXPORT int FastFuncts::setUnitSoldiersAdvanced(unit* un, int num, int exp)
+{
+	if (num<=1)
+	{
+		return 0;
+	}
+	un->number = num;
+	un->expScreen = exp;
+
+	for (int i = 0; i < un->number; i++)
+	{
+		un->soldiersArr[i].exp = exp * 0x10 + 1;
+	}
+
+	return 1;
+}
+
 void FastFuncts::setGeneralLabel(general* gen, string* label)
 {
 	ofstream f1;
@@ -1175,4 +1206,35 @@ void FastFuncts::writeConsoleCommandsFile()
 
 		f1.close();
 	}
+}
+
+stackStruct* FastFuncts::getArmyOnCoords(int x, int y, int skippedNumber)
+{
+	UINT32 numFac = FastFuncts::getFactionsCount();
+	factionStruct** listFac = FastFuncts::getFactionsList();
+
+	int number = 0;
+	for (UINT32 i = 0; i < numFac; i++)
+	{
+		for (int j = 0; j < listFac[i]->stackNum; j++)
+		{
+			if (listFac[i]->stacks[j]->gen == nullptr)continue;
+
+
+			if (listFac[i]->stacks[j]->gen->xCoord == x
+				&&
+				listFac[i]->stacks[j]->gen->yCoord == y
+				)
+			{
+				if (number >= skippedNumber)
+				{
+					return listFac[i]->stacks[j];
+				}
+				number++;
+			}
+		}
+
+	}
+
+	return nullptr;
 }

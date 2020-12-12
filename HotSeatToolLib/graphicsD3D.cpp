@@ -2,6 +2,8 @@
 #include "BigMenus.h"
 #include "detours.h"
 #include "keyboardFunctions.h"
+#include "startFortsModelsPatch.h"
+
 
 
 bool Open = false;
@@ -20,284 +22,315 @@ ID3DXFont* m_font = 0;
 RECT fontRect = { 20, 20, 555, 555 };
 
 
+typedef LRESULT(__stdcall* f_newGameWndProc)(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam); // Our function prototype 
+
 typedef HRESULT(__stdcall* f_EndScene)(IDirect3DDevice9* pDevice); // Our function prototype 
 typedef HRESULT(__stdcall* f_Reset)(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters); // Our function prototype 
+f_newGameWndProc onewGameWndProc; // Original GetKeyState
 f_EndScene oEndScene; // Original Endscene
 f_Reset oReset; // Original Endscene
 
 
-LPDIRECT3DDEVICE9 actualDevice= nullptr;
+LPDIRECT3DDEVICE9 actualDevice = nullptr;
 
 
 DWORD menuStopTime = 0;
 bool init()
 {
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
 
-    menuStopTime = GetTickCount()+ 7000;
-    while (Window == nullptr)
-    {
-        Window = FindWindowA(0, ("Medieval 2"));
-        if (Window) break;
-        Sleep(20);
-    }
+	menuStopTime = GetTickCount() + 7000;
+	while (Window == nullptr)
+	{
+		Window = FindWindowA(0, ("Medieval 2"));
+		if (Window) break;
+		Sleep(20);
+	}
 
-    oWndProc = (WNDPROC)SetWindowLongA(Window, GWL_WNDPROC, (LONG)hkWndProc);
-    if (oWndProc == nullptr) return false;
-    return true;
+	oWndProc = (WNDPROC)SetWindowLongA(Window, GWL_WNDPROC, (LONG)hkWndProc);
+
+	if (oWndProc == nullptr) return false;
+	return true;
 }
 
 bool show_another_window = false;
 void Draw(LPDIRECT3DDEVICE9 pDevice)
 {
 
-    if (structs::cfg.characterUIMenus == 1)
-    {
-        familyEdit::draw(pDevice);
-    }
-    BigMenus::Draw(pDevice);
-    tipsEs::draw(pDevice);
-    bResults::draw(pDevice);
-    if (show_another_window)
-    {
-        POINT p;
-        if (GetCursorPos(&p))
-        {
-            ScreenToClient(Window, &p);
-        }
-        string s = "x= ";
-        s += to_string(p.x);
-        s += "y= ";
-        s += to_string(p.y);
-        //ImGui::SetNextWindowPos(ImVec2(p.x+10,p.y+10));
-        ImGui::SetNextWindowBgAlpha(-1.f);
-        ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize;
-        ImGui::Begin("Cursor coordinates:", &show_another_window, window_flags);
+	if (structs::cfg.characterUIMenus == 1)
+	{
+		familyEdit::draw(pDevice);
+	}
+	BigMenus::Draw(pDevice);
+	tipsEs::draw(pDevice);
+	bResults::draw(pDevice);
+	adminHSUnitsEdit::draw(pDevice);
 
-        ImGui::Text(s.c_str());
-        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(1, 50, 32, 255));
-        if (ImGui::Button("test button!"))
-        {
-            MessageBoxA(NULL, "Click!", "Info", NULL);
-        }
-        if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("Fucking gates!");
 
-        ImGui::PopStyleColor();
-        ImGui::End();
 
-    }
+	if (show_another_window)
+	{
+		POINT p;
+		if (GetCursorPos(&p))
+		{
+			ScreenToClient(Window, &p);
+		}
+		string s = "x= ";
+		s += to_string(p.x);
+		s += "y= ";
+		s += to_string(p.y);
+		//ImGui::SetNextWindowPos(ImVec2(p.x+10,p.y+10));
+		ImGui::SetNextWindowBgAlpha(-1.f);
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize;
+		ImGui::Begin("Cursor coordinates:", &show_another_window, window_flags);
+		ImGui::Text("state = %d",*reinterpret_cast<int*>(structs::gameDataOffsets.battleStacksOffsetStart + 0x4));
+
+		ImGui::Text(s.c_str());
+		ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(1, 50, 32, 255));
+		if (ImGui::Button("test button!"))
+		{
+			MessageBoxA(NULL, "Click!", "Info", NULL);
+		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Fucking gates!");
+
+		ImGui::PopStyleColor();
+		ImGui::End();
+
+	}
 }
 
 
 HRESULT __stdcall hkReset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters)
 {
-    if (initCount > 0)
-    {
-        D3DDEVICE_CREATION_PARAMETERS d3dcp{ 0 };
+	if (initCount > 0)
+	{
+		D3DDEVICE_CREATION_PARAMETERS d3dcp{ 0 };
 
-        ImGui_ImplDX9_Shutdown();
-        ImGui_ImplWin32_Shutdown();
-        ImInitialized = false;
-    }
-    return oReset(pDevice, pPresentationParameters);
+		ImGui_ImplDX9_Shutdown();
+		ImGui_ImplWin32_Shutdown();
+		ImInitialized = false;
+	}
+	return oReset(pDevice, pPresentationParameters);
 
 }
 
+bool capMouse = false;
 HRESULT APIENTRY hkEndScene(IDirect3DDevice9* pDevice)
 {
-    
-
-    D3DDEVICE_CREATION_PARAMETERS cparams;
-    RECT rect;
-
-    if (GetTickCount()< menuStopTime)
-    {
-
-        pDevice->GetCreationParameters(&cparams);
-        GetWindowRect(cparams.hFocusWindow, &rect);
-        UINT32 fontSize = rect.bottom / 25;
-        D3DXCreateFont(pDevice, fontSize, 0, 5, 0, 0, 1, 0, 0, 0 | FF_DONTCARE, TEXT("MariageAntD"), &m_font);
-        fontColor = D3DCOLOR_XRGB(255, 255, 255);
-        m_font->DrawText(0, L"MTW2EOP v1.19", -1, &fontRect, DT_LEFT, fontColor);
-        m_font->Release();
-    }
 
 
+	D3DDEVICE_CREATION_PARAMETERS cparams;
+	RECT rect;
+
+	if (GetTickCount() < menuStopTime)
+	{
+
+		pDevice->GetCreationParameters(&cparams);
+		GetWindowRect(cparams.hFocusWindow, &rect);
+		UINT32 fontSize = rect.bottom / 25;
+		D3DXCreateFont(pDevice, fontSize, 0, 5, 0, 0, 1, 0, 0, 0 | FF_DONTCARE, TEXT("MariageAntD"), &m_font);
+		fontColor = D3DCOLOR_XRGB(255, 255, 255);
+		m_font->DrawText(0, L"MTW2EOP v1.19", -1, &fontRect, DT_LEFT, fontColor);
+		m_font->Release();
+	}
 
 
-    if (!ImInitialized)
-    {
-        initCount++;
-        actualDevice = pDevice;
-
-        pDevice->GetCreationParameters(&BigMenus::screenParams.cparams);
-        GetWindowRect(BigMenus::screenParams.cparams.hFocusWindow, &BigMenus::screenParams.rect);
 
 
-        ImFontConfig font_config;
-        font_config.OversampleH = 1;
-        font_config.OversampleV = 1;
-        font_config.PixelSnapH = 1;
-        static const ImWchar ranges[] =
-        {
-            0x0020, 0x00FF, // Basic Latin + Latin Supplement
-            0x0400, 0x044F, // Cyrillic
-            0,
-        };
-        ImGuiIO& io = ImGui::GetIO();
-        string f = structs::cfg.modPatch;
-        f = f + "\\youneuoy_Data\\inGame.ttf";
+	if (!ImInitialized)
+	{
+		initCount++;
+		actualDevice = pDevice;
+
+		pDevice->GetCreationParameters(&BigMenus::screenParams.cparams);
+		GetWindowRect(BigMenus::screenParams.cparams.hFocusWindow, &BigMenus::screenParams.rect);
 
 
-        pDevice->GetCreationParameters(&cparams);
-        GetWindowRect(cparams.hFocusWindow, &rect);
+		ImFontConfig font_config;
+		font_config.OversampleH = 1;
+		font_config.OversampleV = 1;
+		font_config.PixelSnapH = 1;
+		static const ImWchar ranges[] =
+		{
+			0x0020, 0x00FF, // Basic Latin + Latin Supplement
+			0x0400, 0x044F, // Cyrillic
+			0,
+		};
+		ImGuiIO& io = ImGui::GetIO();
 
-        colors::readUI();
-        float fontSize = rect.bottom / colors::uiSett.textSize;
-        io.Fonts->AddFontFromFileTTF(f.c_str(), fontSize, &font_config, ranges);
-
-        ImGui_ImplWin32_Init(Window);
-        ImGui_ImplDX9_Init(pDevice);
-
-        //styles
-        colors::readColors();
-        ImGui::PushStyleColor(ImGuiCol_Text, colors::menuColors.text);
-        ImInitialized = true;
-    }
+		string f = structs::cfg.modPatch;
+		f = f + "\\youneuoy_Data\\inGame.ttf";
 
 
-        ImGui_ImplDX9_NewFrame();
-        ImGui_ImplWin32_NewFrame();
-        ImGui::NewFrame();
+		pDevice->GetCreationParameters(&cparams);
+		GetWindowRect(cparams.hFocusWindow, &rect);
 
-        mmbMove();
-        Draw(pDevice);
+		colors::readUI();
+		float fontSize = rect.bottom / colors::uiSett.textSize;
+		io.Fonts->AddFontFromFileTTF(f.c_str(), fontSize, &font_config, ranges);
 
-        ImGui::EndFrame();
-        ImGui::Render();
-        ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
-    return oEndScene(pDevice);
-}   
+		ImGui_ImplWin32_Init(Window);
+		ImGui_ImplDX9_Init(pDevice);
+			
+		//styles
+		colors::readColors();
+		ImGui::PushStyleColor(ImGuiCol_Text, colors::menuColors.text);
+		ImInitialized = true;
+	}
+
+
+	ImGui_ImplDX9_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	mmbMove();
+	Draw(pDevice);
+
+	capMouse = ImGui::GetIO().WantCaptureMouse;
+	ImGui::EndFrame();
+	ImGui::Render();
+	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+	return oEndScene(pDevice);
+}
 
 LRESULT CALLBACK hkWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    if (uMsg == WM_KEYDOWN)
-    {
-        if (familyEdit::persCh)
-        {
 
-            if (wParam == VK_ESCAPE)
-            {
-                familyEdit::checkDisableDrawCond();
-            }
-        }
+	if (uMsg == WM_KEYDOWN)
+	{
+		if (familyEdit::persCh)
+		{
 
-        if (wParam == 0x56 && (GetAsyncKeyState(VK_CONTROL)))
-        {
-            bResults::switchDraw();
-        }
-    }
+			if (wParam == VK_ESCAPE)
+			{
+				familyEdit::checkDisableDrawCond();
+			}
+		}
 
-    switch (uMsg)
-    {
-         case WM_LBUTTONDOWN: 
-         {
-             if (wParam != MK_LBUTTON)break;
-             if (familyEdit::persCh)
-             {
-                 familyEdit::checkDisableDrawCond(1);
-                 break;
-             }
-             break;
-         }
-         case WM_RBUTTONDOWN:
-         {
-             if (wParam != MK_RBUTTON)break;
-             if (familyEdit::persCh)
-             {
-                 familyEdit::checkDisableDrawCond(2);
-                 break;
-             } else if (!familyEdit::persCh)
-             {
-                 familyEdit::checkDrawCond();
-                 break;
-             }
-             break;
-         }
-         case WM_MBUTTONDOWN:
-         {
-             mmbWork();
+		if (wParam == 0x56 && (GetAsyncKeyState(VK_CONTROL)))
+		{
+			bResults::switchDraw();
+			adminHSUnitsEdit::switchDraw();
+		}
+	}
 
-             break;
-         }
-         case WM_MBUTTONUP:
-         {
-             mmbUnWork();
+	switch (uMsg)
+	{
 
-             break;
-         }
-         case WM_MOUSEMOVE:
-         {
-            // mmbMove();
+	case WM_LBUTTONDOWN:
+	{
+		if (wParam != MK_LBUTTON)break;
+		if (familyEdit::persCh)
+		{
+			familyEdit::checkDisableDrawCond(1);
+			break;
+		}
+		break;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		if (wParam != MK_RBUTTON)break;
+		if (familyEdit::persCh)
+		{
+			familyEdit::checkDisableDrawCond(2);
+			break;
+		}
+		else if (!familyEdit::persCh)
+		{
+			familyEdit::checkDrawCond();
+			break;
+		}
+		break;
+	}
+	case WM_MBUTTONDOWN:
+	{
+		mmbWork();
 
-             break;
-         }
-    }
+		break;
+	}
+	case WM_MBUTTONUP:
+	{
+		mmbUnWork();
 
-    if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam)) return 1;
-    return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
+		break;
+	}
+
+	case WM_MOUSEMOVE:
+	{
+		// mmbMove();
+
+		break;
+	}
+	}
+
+
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam)) return 1l;
+
+
+	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
-
 
 
 bool GetD3D9Device(void** pTable, size_t Size)
 {
-    if (!pTable)
-        return false;
+	if (!pTable)
+		return false;
 
-    IDirect3D9* pD3D = Direct3DCreate9(D3D_SDK_VERSION);
+	IDirect3D9* pD3D = Direct3DCreate9(D3D_SDK_VERSION);
 
-    if (!pD3D)
-        return false;
+	if (!pD3D)
+		return false;
 
-    IDirect3DDevice9* pDummyDevice = NULL;
+	IDirect3DDevice9* pDummyDevice = NULL;
 
 
-    D3DPRESENT_PARAMETERS d3dpp = {};
-    d3dpp.Windowed = false;
-    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-    d3dpp.hDeviceWindow = Window;
+	D3DPRESENT_PARAMETERS d3dpp = {};
+	d3dpp.Windowed = false;
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	d3dpp.hDeviceWindow = Window;
 
-    HRESULT dummyDeviceCreated = pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
+	HRESULT dummyDeviceCreated = pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
 
-    if (dummyDeviceCreated != S_OK)
-    {
+	if (dummyDeviceCreated != S_OK)
+	{
 
-        d3dpp.Windowed = !d3dpp.Windowed;
+		d3dpp.Windowed = !d3dpp.Windowed;
 
-        dummyDeviceCreated = pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
+		dummyDeviceCreated = pD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &pDummyDevice);
 
-        if (dummyDeviceCreated != S_OK)
-        {
-            pD3D->Release();
-            return false;
-        }
-    }
+		if (dummyDeviceCreated != S_OK)
+		{
+			pD3D->Release();
+			return false;
+		}
+	}
 
-    memcpy(pTable, *reinterpret_cast<void***>(pDummyDevice), Size);
+	memcpy(pTable, *reinterpret_cast<void***>(pDummyDevice), Size);
 
-    pDummyDevice->Release();
-    pD3D->Release();
-    return true;
+	pDummyDevice->Release();
+	pD3D->Release();
+	return true;
 }
 
+bool onetwo = false;
+LRESULT __stdcall hkWndProc2(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+
+		if (capMouse)
+		{
+			ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
+			return 1l;
+		}
+
+	return onewGameWndProc(hWnd, uMsg, wParam, lParam);
+}
 
 
 DWORD WINAPI InitS()
 {
-    init();
+	init();
 	string f = structs::cfg.modPatch;
 	f = f + "\\youneuoy_Data\\mainFont.ttf";
 	std::wstring stemp = std::wstring(f.begin(), f.end());
@@ -305,31 +338,45 @@ DWORD WINAPI InitS()
 
 	AddFontResourceEx(sw, FR_PRIVATE, NULL);
 
-    if (GetD3D9Device(d3d9Device, sizeof(d3d9Device)))
-    {
-        oEndScene = (f_EndScene)DetourFunction((PBYTE)d3d9Device[42], (PBYTE)hkEndScene);
-        oReset = (f_Reset)DetourFunction((PBYTE)d3d9Device[16], (PBYTE)hkReset);
-    }
-    return true;
+	if (GetD3D9Device(d3d9Device, sizeof(d3d9Device)))
+	{
+		oEndScene = (f_EndScene)DetourFunction((PBYTE)d3d9Device[42], (PBYTE)hkEndScene);
+		oReset = (f_Reset)DetourFunction((PBYTE)d3d9Device[16], (PBYTE)hkReset);
+	}
+
+
+	DWORD adr = 0;
+	if (structs::cfg.gamever == 2)//steam
+	{
+		adr = 0x01178a40;
+	}
+	else
+	{
+		adr = 0x011780d0;
+	}
+	onewGameWndProc = (f_newGameWndProc)DetourFunction((PBYTE)adr, (PBYTE)hkWndProc2);
+	return true;
 }
 
 void getCPos(POINT* p)
 {
-    if (GetCursorPos(p))
-    {
-        ScreenToClient(Window, p);
-    }
+	if (GetCursorPos(p))
+	{
+		ScreenToClient(Window, p);
+	}
 }
 
 void loadTexture(string* path, LPDIRECT3DTEXTURE9* image)
 {
-    HRESULT res = D3DXCreateTextureFromFileA(actualDevice, path->c_str(), image);
-    string t = std::system_category().message(res);
-    if(res!=D3D_OK)
-    {
-        MessageBoxA(NULL, t.c_str(), "Loading texture err!", MB_OK | MB_ICONASTERISK);
-    }
+	HRESULT res = D3DXCreateTextureFromFileA(actualDevice, path->c_str(), image);
+	string t = std::system_category().message(res);
+	if (res != D3D_OK)
+	{
+		MessageBoxA(NULL, t.c_str(), "Loading texture err!", MB_OK | MB_ICONASTERISK);
+	}
 }
+
+
 
 
 

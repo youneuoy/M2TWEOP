@@ -33,11 +33,12 @@ namespace FastFuncts
 
 
 
+	EOP_EXPORT int getFactionIndexByDipNum(int dipNum);
 	EOP_EXPORT int getEDUIndex(const char* type);
 
-	EOP_EXPORT unit* createUnitN(const char* type,int exp, int arm,int weap);
+	EOP_EXPORT unit* createUnitN(const char* type, int facNum,int exp, int arm,int weap);
 
-	EOP_EXPORT unit* createUnitIdx(int index, int exp, int arm, int weap);
+	EOP_EXPORT unit* createUnitIdx(int index, int facNum, int exp, int arm, int weap);
 
 	EOP_EXPORT int addUnitToArmy(unit* un,stackStruct* army);
 
@@ -83,6 +84,9 @@ namespace FastFuncts
 
 	//set unit soldiersNum and EXP
 	EOP_EXPORT int setUnitSoldiers(unit* un,UINT32 num, UINT32 exp, string type);
+
+	EOP_EXPORT int setUnitSoldiersAdvanced(unit* un,int num, int exp);
+
 	//set label of character
 	EOP_EXPORT void setGeneralLabel(general* gen, string* label);
 	//set battle model of character
@@ -129,4 +133,8 @@ namespace FastFuncts
 
 	//write console commands info file
 	void writeConsoleCommandsFile();
+
+
+
+	stackStruct* getArmyOnCoords(int x, int y, int skippedNumber = 0);
 }
