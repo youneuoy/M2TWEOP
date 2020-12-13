@@ -566,6 +566,13 @@ void doPachs()
 
 	f1 << "Done" << endl;
 
+	f1 << "Start applying start fort models patch" << endl;
+	toFortsModelsSelect* stratFortm = new toFortsModelsSelect(mem, (LPVOID)startFortsModelsPatch::checkAndChangeModels, structs::cfg.gamever);
+	stratFortm->SetlFortModelsCode();
+	stratFortm->Enable();
+
+	f1 << "Done" << endl;
+
 	thread thrSMod(limitsFile,mem);
 
 	thrSMod.detach();
@@ -573,9 +580,6 @@ void doPachs()
 	f1 << "End." << endl;
 
 	f1.close();
-
-
-
 }
 
 
@@ -595,6 +599,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 		CloseHandle(CreateThread(0, 0, (LPTHREAD_START_ROUTINE)KeyboardHook, 0, 0, 0));
 		CloseHandle(CreateThread(0, 0, (LPTHREAD_START_ROUTINE)InitS, 0, 0, 0));
 		plugins::init();
+		break;
 	}
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:

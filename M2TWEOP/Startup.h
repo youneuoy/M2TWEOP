@@ -1,16 +1,12 @@
 #pragma once
-
-
 #include <string>
 #include <vector>
 #include <windows.h>
-#include <psapi.h>
+
 #include <fstream>
 #include <shlwapi.h>
 
-#pragma comment(lib,"Version.lib")
 #pragma comment(lib, "user32.lib")
-#pragma comment(lib, "Psapi.lib")
 #include "Params.h"
 #include "music.h"
 using namespace std;

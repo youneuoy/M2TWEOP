@@ -154,39 +154,10 @@ void stratModelsPatch::modelsChangeThread(DWORD sleepTime)
 
 		factionStruct** listFac = FastFuncts::getFactionsList();
 
-		/*//test
 		for (UINT32 i = 0; i < numFac; i++)
 		{
 			UINT32 numOfSettl = listFac[i]->settlementsNum;
 			if (numOfSettl == 0)continue;
-
-			for (UINT32 j = 0; j < numOfSettl; j++)
-			{
-				int notChange;
-					for (stratResMod* md : stratModelsPatch::changedModels)
-					{
-						if (listFac[i]->settlements[j]->model->castle == md->model)
-						{
-							notChange = 1;
-							break;
-						}
-					}
-					if (notChange == 1)
-					{
-						continue;
-					}
-					listFac[i]->settlements[j]->model->town = structs::modelsStrat[0]->modelP->model;
-					listFac[i]->settlements[j]->model->castle = structs::modelsStrat[0]->modelP->model;
-			}
-		}*/
-		//!
-		//! 
-		 startFortsModelsPatch::checkAndChangeModels();
-		for (UINT32 i = 0; i < numFac; i++)
-		{
-			UINT32 numOfSettl = listFac[i]->settlementsNum;
-			if (numOfSettl == 0)continue;
-
 			for (UINT32 j = 0; j < numOfSettl; j++)
 			{
 

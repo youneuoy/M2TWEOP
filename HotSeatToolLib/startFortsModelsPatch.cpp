@@ -19,16 +19,35 @@ void startFortsModelsPatch::setFortModel(fortModelChangeS* modelCh, fortStruct* 
 		
 		ofstream f1("logs\\stratFortsModelsChangeList.youneuoylog", ios::app);
 
-		stratFortMod* newMods = new stratFortMod[32];
-		for (int i = 0; i < 31; i++)
+
+		stratFortMod* newMods = new stratFortMod[33];
+		memset(newMods, 0, sizeof(stratFortMod) * 33);
+
+		f1 << "wallsModel RAM adress here:" << hex << &newMods->centerModel << endl;
+		newMods->centerModel = model->stratFortModel->centerModel;
+
+		newMods->centerModelPath = model->stratFortModel->centerModelPath;
+		newMods->centerModelPathCrypt = model->stratFortModel->centerModelPathCrypt;
+
+		newMods->wallsModel = model->stratFortModel->wallsModel;
+
+		newMods->wallsModelPath = model->stratFortModel->wallsModelPath;
+		newMods->wallsModelPathCrypt = model->stratFortModel->wallsModelPathCrypt;
+
+		/*for (int i = 0; i <= 31; i++)
 		{
-			f1 << "wallsModel RAM adress here:" << hex << newMods[i].centerModel << endl;
+			f1 << "wallsModel RAM adress here:" << hex << &newMods[i].centerModel << endl;
 			newMods[i].centerModel = model->stratFortModel->centerModel;
+
+			newMods[i].centerModelPath = model->stratFortModel->centerModelPath;
+			newMods[i].centerModelPathCrypt = model->stratFortModel->centerModelPathCrypt;
+
 			newMods[i].wallsModel = model->stratFortModel->wallsModel;
-		}
-		/*stratFortMod* newMod = new stratFortMod();
-		newMod->centerModel = model->stratFortModel->centerModel;
-		newMod->wallsModel = model->stratFortModel->wallsModel;*/
+
+			newMods[i].wallsModelPath = model->stratFortModel->wallsModelPath;
+			newMods[i].wallsModelPathCrypt = model->stratFortModel->wallsModelPathCrypt;
+
+		}*/
 
 		dataS.changedFortModels.push_back(newMods);
 		fort->stratModel = newMods;
@@ -36,10 +55,9 @@ void startFortsModelsPatch::setFortModel(fortModelChangeS* modelCh, fortStruct* 
 	}
 }
 
-void startFortsModelsPatch::checkAndChangeModels()
+void __stdcall startFortsModelsPatch::checkAndChangeModels()
 {
 	if (dataS.checkNeed == false)return;
-	if (FastFuncts::getFactionsCount() == 0)return;
 
 	UINT32 numFac = FastFuncts::getFactionsCount();
 
@@ -59,7 +77,6 @@ void startFortsModelsPatch::checkAndChangeModels()
 					) continue;
 				setFortModel(modCh, listFac[i]->forts[j]);
 			}
-
 		}
 	}
 }
@@ -139,10 +156,36 @@ void __stdcall startFortsModelsPatch::readCasModels()
 
 		mod->stratFortModel->centerModel = readModel(&mod->centerPath);
 
+		
+		char* centerModelPath = new char[mod->centerPath.length() + 1];
+
+		memcpy(centerModelPath, mod->centerPath.c_str(), mod->centerPath.length() + 1);
+		UINT32 pathPointer = (UINT32)&mod->stratFortModel->centerModelPath;
+		UINT32 functionOffset = structs::gameCodeOffsets.setStringAndCryptOffset;
+		_asm {
+			push centerModelPath
+			mov ecx, pathPointer
+			mov eax, functionOffset
+			call eax
+		}
+
+
 		f1 << "centerModel RAM adress here:" << hex << mod->stratFortModel->centerModel << endl;
 
 
 		mod->stratFortModel->wallsModel = readModel(&mod->wallsPath);
+
+		char* wallsModelPath = new char[mod->wallsPath.length() + 1];
+
+		memcpy(wallsModelPath, mod->wallsPath.c_str(), mod->wallsPath.length() + 1);
+		 pathPointer = (UINT32)&mod->stratFortModel->wallsModelPath;
+		_asm {
+			push wallsModelPath
+			mov ecx, pathPointer
+			mov eax, functionOffset
+			call eax
+		}
+
 
 		f1 << "wallsModel RAM adress here:" << hex << mod->stratFortModel->wallsModel << endl;
 

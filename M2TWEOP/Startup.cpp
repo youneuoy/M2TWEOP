@@ -364,7 +364,20 @@ int Startup::runMod()
 	PathRemoveFileSpecA(&stdir.front());
 	stdir.resize(strlen(stdir.data()));
 	stdir.shrink_to_fit();
-	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+
+
+
+	string d3dS = stdir;
+	d3dS += "\\d3d9.dll";
+	bool sucess=DeleteFile(d3dS.c_str());
+
+	string wrapd3dS = Startup::gameInfo.currentMod;
+	wrapd3dS += "\\d3d9dllWrapper.dll";
+	if (CopyFile(wrapd3dS.c_str(), d3dS.c_str(), FALSE)==false)
+	{
+		MessageBoxA(NULL, "Cannot run M2TWEOP, d3d9.dll replasing error! Try to delete d3d9.dll in game folder. ", "ERROR", MB_OK);
+		exit(0);
+	}
 
 
 	UINT32 res = (UINT)ShellExecuteA(
@@ -393,7 +406,6 @@ int Startup::runVanilla()
 	PathRemoveFileSpecA(&stdir.front());
 	stdir.resize(strlen(stdir.data()));
 	stdir.shrink_to_fit();
-	UINT32 resCoI = (UINT32)CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
 
 	UINT32 res = (UINT)ShellExecuteA(
 		NULL,

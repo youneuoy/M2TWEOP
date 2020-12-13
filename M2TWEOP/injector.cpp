@@ -6,7 +6,15 @@ void injector::start()
 	threadF();
 }
 
+
 void injector::threadF()
+{
+
+
+}
+
+
+/*void injector::threadF()
 {
 	//string libP = Startup::gameInfo.realDir;
 	string libP = Startup::gameInfo.currentMod;
@@ -50,4 +58,4 @@ void injector::threadF()
 	VirtualFreeEx(hMTW2, pDllPath, 0, MEM_RELEASE);
 
 	CloseHandle(hMTW2);
-}
+}*/

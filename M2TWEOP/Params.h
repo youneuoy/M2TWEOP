@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <windows.h>
-#include <psapi.h>
 
 using namespace std;
 class Params

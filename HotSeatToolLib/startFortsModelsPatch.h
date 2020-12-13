@@ -40,7 +40,7 @@ public:
 
 	static void setFortModel(fortModelChangeS* modelCh, fortStruct* fort);
 
-	static void checkAndChangeModels();
+	static void __stdcall checkAndChangeModels();
 
 	//read models list
 	static void readModelsFile();

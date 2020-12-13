@@ -1461,3 +1461,51 @@ void toCustomTileFileRead::SetlTilesCode()
 
 	delete a;
 }
+
+toFortsModelsSelect::toFortsModelsSelect(MemWork* mem, LPVOID adr, int ver)
+	:AATemplate(mem), funcAdress(adr)
+{
+	if (ver == 2)//steam
+		m_adress = 0x0046c44f;
+
+	else if (ver == 1)//kingdoms
+		m_adress = 0x0046c08f;
+}
+
+toFortsModelsSelect::~toFortsModelsSelect()
+{
+}
+
+void toFortsModelsSelect::SetOriginalFortModelsCode()
+{
+	Assembler* a = new Assembler();
+
+	a->lea(edi, dword_ptr(ebx, 0x228));
+
+	a->ret();
+	m_originalBytes = (unsigned char*)a->make();
+	m_originalSize = m_memory->GetASMSize(m_originalBytes);
+
+	delete a;
+}
+
+void toFortsModelsSelect::SetlFortModelsCode()
+{
+	Assembler* a = new Assembler();
+
+	a->pushad();
+	a->pushf();
+
+	a->mov(eax, (DWORD)funcAdress);
+	a->call(eax);
+
+	a->popf();
+	a->popad();
+
+	a->lea(edi, dword_ptr(ebx, 0x228));
+
+	a->ret();
+	m_cheatBytes = (unsigned char*)a->make();
+
+	delete a;
+}

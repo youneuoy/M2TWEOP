@@ -375,3 +375,17 @@ public:
 private:
 	LPVOID funcAdress;
 };
+
+//on custom tiles file read
+class toFortsModelsSelect
+	:public AATemplate
+{
+public:
+	toFortsModelsSelect(MemWork* mem, LPVOID adr, int ver);
+	~toFortsModelsSelect();
+
+	void SetOriginalFortModelsCode();
+	void SetlFortModelsCode();
+private:
+	LPVOID funcAdress;
+};
